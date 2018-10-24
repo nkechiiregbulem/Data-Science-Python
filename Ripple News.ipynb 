@@ -1,0 +1,766 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import newspaper\n",
+    "from newspaper import Article\n",
+    "import nltk\n",
+    "from IPython.display import Image\n",
+    "\n",
+    "# Preparation for matplotlib\n",
+    "%matplotlib inline "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "class color:\n",
+    "   PURPLE = '\\033[95m'\n",
+    "   CYAN = '\\033[96m'\n",
+    "   DARKCYAN = '\\033[36m'\n",
+    "   BLUE = '\\033[94m'\n",
+    "   GREEN = '\\033[92m'\n",
+    "   YELLOW = '\\033[93m'\n",
+    "   RED = '\\033[91m'\n",
+    "   BOLD = '\\033[1m'\n",
+    "   UNDERLINE = '\\033[4m'\n",
+    "   END = '\\033[0m'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "application/javascript": [
+       "require(\n",
+       "        [\"notebook/js/outputarea\"],\n",
+       "        function (oa) {\n",
+       "            oa.OutputArea.auto_scroll_threshold = -1;\n",
+       "            console.log(\"Setting auto_scroll_threshold to -1\");\n",
+       "        });"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Javascript object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "%%javascript\n",
+    "require(\n",
+    "        [\"notebook/js/outputarea\"],\n",
+    "        function (oa) {\n",
+    "            oa.OutputArea.auto_scroll_threshold = -1;\n",
+    "            console.log(\"Setting auto_scroll_threshold to -1\");\n",
+    "        });"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Ripple News"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2015/11/Logo_old_new_v2-1-1.gif\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from IPython.display import Image\n",
+    "Image(url='https://cdn.ripple.com/wp-content/uploads/2015/11/Logo_old_new_v2-1-1.gif')   "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Successfully retrieved 119 articles from https://ripple.com/category/insights/news/\n",
+      "Industry Updates\n"
+     ]
+    }
+   ],
+   "source": [
+    "my_news_website = \"https://ripple.com/category/insights/news/\"\n",
+    "my_newspaper = newspaper.build(my_news_website, memoize_articles=False)\n",
+    "num_articles = len(my_newspaper.articles)\n",
+    "if num_articles > 15: \n",
+    "    print (\"Successfully retrieved\", num_articles, \"articles from\", my_news_website)\n",
+    "    print(my_newspaper.description)\n",
+    "else:\n",
+    "    print (\"There are just\", num_articles, \"in your selected site. I suggest you select another news site\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Top News on Ripple - Industry Updates"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "------------- Ripple Insights :  https://ripple.com/category/insights/news/\n",
+      "\n",
+      " 1 ) ----------  https://ripple.com/category/insights/news/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mInsights - News\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/mark.png\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "A variety of players in the financial ecosystem are exploring and adopting more use cases for distributed financial technology.\n",
+      "Vermont has taken an about-face on blockchain technology concluding that the costs outweigh the benefits.\n",
+      "The McKinsey 2016 Global Payments Report discusses the major trends for transaction banking and the role of digital innovation in payments.\n",
+      "Banks were added to our growing network, we completed a successful Series B investment round and formed the Global Payments Steering ...\n",
+      "We wanted to know what the most popular posts of the year were, so we analyzed site traffic to Ripple Insights and created a list of the top five posts ...\n",
+      "\n",
+      " 2 ) ----------  https://ripple.com/insights/transfergo-on-solving-for-real-time-cross-border-settlement-at-swell-2018/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mTransferGo On Solving for Real-Time Cross-Border Settlement at Swell 2018\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/p6216000_3098636631_5.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "CEO of TransferGo Daumantas Dvilinskas took center stage on day two of Swell 2018.\n",
+      "Not only did he share in detail how TransferGo is delivering on its promise of making global real-time settlement a reality, he also announced a new, free global payments service for customers anywhere in the world: TransferGo FREE.\n",
+      "Ripple helped us build and manage this relationship.”This new corridor from Europe to India offers real-time transactions and relies on a single API.\n",
+      "He pointed out that the cost, or “price,” of cross-border transactions is a huge friction point for most customers.\n",
+      "Dvilinskas and TransferGo are now offering TransferGo FREE to customers around the world.\n",
+      "Error with the url\n",
+      "\n",
+      " 3 ) ----------  https://ripple.com/insights/swell-2018-report-finds-tipping-point-for-mass-adoption-of-blockchain-is-near/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mSwell 2018: Report Finds Tipping Point for Mass Adoption of Blockchain Is Near\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/p6216000_3098341016_5.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Ripple unveiled the findings of its first Blockchain in Payments Report in the keynote session on day two of Swell 2018.\n",
+      "The report revealed the adoption of blockchain-based global payments is reaching critical mass this year, and organizations worldwide are already looking to incorporate digital assets into payment flows.\n",
+      "The tipping point for mass adoption of blockchain is fast approaching:45 percent of those surveyed said they are already in production, piloting or close to signing with a blockchain provider.\n",
+      "Growing blockchain connectivity facilitates digital asset adoption:85 percent of those using blockchain in production and 90 percent of those quickly moving to production are either extremely or very interested in using digital assets as a form of payment.\n",
+      "Download your free copy of this report and benchmark your organizations’ progress in adopting this new technology against the adoption curve.\n",
+      "Error with the url\n",
+      "\n",
+      " 4 ) ----------  https://ripple.com/insights/global-regulatory-policies-took-center-stage-on-day-one-of-swell-2018/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mGlobal Regulatory Policies Took Center Stage On Day One of Swell 2018\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/p6216000_3096777173_5.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The future of blockchain technology and global regulation of digital assets took center stage on the the first day of Swell 2018.\n",
+      "Honorable Sunil Sabharwal, former alternate executive director of the International Monetary Fund (IMF), offered thoughts on the opportunities for broader global regulation for blockchain digital assets.\n",
+      "“In cross-border payments, business-to-business payments is about $150 trillion dollars,” explained Sabharwal to the audience.\n",
+      "“We saw it could bring more efficiency to cross-border payments”, said Alzahrani.\n",
+      "The second is a lack of training.”Sabharwal went on to explain that many central banks lack serious anti-money laundering training, an issue being addressed currently by the IMF.\n",
+      "Error with the url\n",
+      "\n",
+      " 5 ) ----------  https://ripple.com/insights/swell-2018-how-banco-santander-launched-a-payment-app-for-millions/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mSwell 2018: How Banco Santander Launched a Payment App for Millions\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/p6216000_3096591682_5.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Banco Santander has long been on the frontlines of blockchain adoption for global payments.\n",
+      "In April of this year, the bank launched One Pay FX, the world’s first mobile application for cross-border payments powered by RippleNet.\n",
+      "As Metzger explained, the bank’s 140 million retail and commercial customers worldwide have new expectations for their international payments experience.\n",
+      "The service also provides on-demand international payments for customers in Spain, Brazil and Poland.\n",
+      "That’s really powerful.”To watch the latest coverage of Swell 2018, visit Insights and follow along on Twitter, LinkedIn or Facebook tomorrow through Wednesday, October 3.\n",
+      "Error with the url\n",
+      "\n",
+      " 6 ) ----------  https://ripple.com/insights/ceo-brad-garlinghouse-talks-internet-of-value-and-customer-traction-at-swell-2018/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mCEO Brad Garlinghouse Talks Internet of Value and Customer Traction at Swell 2018\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/p6216000_3096282507_5.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "CEO Brad Garlinghouse kicked off Swell 2018 by introducing Ripple’s mission — the Internet of Value — to enable the the world to move value like information moves today.\n",
+      "The introduction of Internet in 90’s allowed us to move data around the world in an instant, at no cost.\n",
+      "By bringing these three networks together, Garlinghouse explained, “We can truly enable an Internet of Value.\n",
+      "Ripple is unique in that it has real use cases for blockchain and real production flows.\n",
+      "As of today, Ripple is now sending live payments using XRP for on-demand liquidity from U.S. to Mexico with Cuallix.\n",
+      "Error with the url\n",
+      "\n",
+      " 7 ) ----------  https://ripple.com/insights/swell-2018-kicks-off-tomorrow/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mSwell 2018 Kicks Off Tomorrow\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/swell_whattoexpect.png\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The world’s leading experts on policy, payments and technology are already converging in San Francisco for Swell by Ripple.\n",
+      "The RippleNet Committee meets before Swell 2018 at Ripple’s headquarters in San Francisco, California .\n",
+      "Together, representatives from these institutions make up the RippleNet Committee.\n",
+      "Ripple’s SVP of Customer Success Marcus Treacher gives his opening remarks at the RippleNet Committee meeting.\n",
+      "You can learn more about the RippleNet Committee here.\n",
+      "\n",
+      " 8 ) ----------  https://ripple.com/insights/siam-commercial-bank-pioneers-ripplenets-multi-hop-feature/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mSiam Commercial Bank Pioneers RippleNet’s “Multi-hop” Feature\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_300284237.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Starting today, Siam Commercial Bank (SCB) will be the first financial institution on RippleNet to pioneer a key feature called “multi-hop”, which allows them to settle frictionless payments on behalf of other financial institutions on the network.\n",
+      "This eliminates the need for a direct one-to-one connection (or bilateral relationship) between financial institutions to settle a payment.\n",
+      "Using multi-hop, SCB will be able to receive and forward on a payment without a bilateral relationship between the originator and beneficiary institutions.\n",
+      "With multi-hop, financial institutions can connect directly to SCB, which can settle and payout across the region without exchanging currencies multiple times and adding heavy fees.\n",
+      "Now, the customers of RippleNet institutions, including remitters and SMEs, will see their payments settle faster, cheaper and more transparently.\n",
+      "\n",
+      " 9 ) ----------  https://ripple.com/insights/pnc-bank-embraces-blockchain-and-joins-ripplenet/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mPNC Bank Embraces Blockchain and Joins RippleNet\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_175816244.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "PNC Bank, a top ten bank in the United States, has joined RippleNet.\n",
+      "PNC customers will be able to receive real-time cross-border payments.\n",
+      "With more than 8 million customers and retail branches in 19 states, PNC has a diverse set of customers, including consumers, small businesses and large corporates.\n",
+      "Ripple’s technology will have an immediate impact on each of those groups, enabling PNC’s commercial clients to receive payments from overseas banks in real time.\n",
+      "The addition of a top U.S. bank like PNC on RippleNet fuels the network’s positive momentum.\n",
+      "\n",
+      " 10 ) ----------  https://ripple.com/insights/ripplenet-expands-to-40-countries-improving-remittances-and-sme-payments/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mRippleNet Now Reaches 40 Countries Improving Remittances and SME Payments\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_370707026.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "An over 400 percent increase in remittance inflows over the last ten years has sparked new demand for faster, low-cost global payments.\n",
+      "Across these same regions small- and medium-enterprises (SMEs), propelled by global payment flows, were responsible for for nearly 60% of employment.\n",
+      "New payment corridors have opened up in North America, Asia, Africa, Europe and South America.\n",
+      "There is no doubt that access to faster, more reliable and lower cost international payments services offers a lifeline for tens of millions of the world’s poor.\n",
+      "Remitters and SMEs across the world, and particularly in emerging markets, are no longer hampered by an inefficient global payments infrastructure.\n",
+      "\n",
+      " 11 ) ----------  https://ripple.com/insights/national-commercial-bank-of-saudi-arabia-joins-ripplenet/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mNational Commercial Bank of Saudi Arabia Joins RippleNet\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_1022539873.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "For the last ten years the Kingdom of Saudi Arabia has been one of the largest sources of remittances in the world.\n",
+      "According to the World Bank, 308 million dollars were sent into the KSA, and 37 billion dollars in remittances were sent from the country in 2016.\n",
+      "This massive market is primarily comprised of Kingdom of Saudi Arabia citizens and foreign workers who in 2018 numbered over 10 million.\n",
+      "SMEs in particular have been highlighted by the Kingdom of Saudi Arabia government as crucial for future economic growth.\n",
+      "Following Ripple’s recent pilot with the Saudi Arabian Monetary Authority, the National Commercial Bank (NCB) has joined RippleNet.\n",
+      "\n",
+      " 12 ) ----------  https://ripple.com/insights/president-bill-clinton-and-counting-crows-headline-swell-2018/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mPresident Bill Clinton and Counting Crows Headline Swell 2018\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/insights_thumbnail2-1024x614.png\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Swell’s provocative program kicks off on day one with a keynote by President Bill Clinton.\n",
+      "These awards recognize thought leaders and first-movers within RippleNet — the people and companies that are using blockchain to remove friction from global payments.\n",
+      "Swell 2018 brings customer and their stories to the forefront and helps create new connections among them.\n",
+      "The future of global payments is being shaped and built by these outstanding companies and individuals.\n",
+      "For more information, please visit the Swell website and stay tuned over the coming weeks for more updates.\n",
+      "\n",
+      " 13 ) ----------  https://ripple.com/insights/ask-me-anything-with-brad-and-cory/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mAsk Me Anything with Brad and Cory\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/AMA_with_Brad_TitleSlide.png\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "﻿Watch this recording of CEO Brad Garlinghouse being interviewed by Chief Market Strategist Cory Johnson.\n",
+      "It aired on Wednesday August 22, 2018 at 3pm (PT).\n",
+      "A transcript of their conversation will be available shortly.\n",
+      "Error with the url\n",
+      "\n",
+      " 14 ) ----------  https://ripple.com/insights/xrapid-brings-on-three-new-exchange-partners/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mxRapid Brings on Three New Exchange Partners\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_712110304.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "xRapid, Ripple’s cross border payments product that minimizes liquidity costs, is powered by the superior speed, low transaction cost and scalability of the digital asset XRP.\n",
+      "But for xRapid to be most successful, there needs to be a healthy ecosystem of digital asset exchange partners around the world.\n",
+      "These exchanges allow xRapid payments to move from one currency – into XRP – and back into another currency quickly and efficiently.\n",
+      "Today, we’re pleased to announce Bittrex will act as the preferred digital asset exchange for xRapid transactions that move through US Dollars.\n",
+      "In May, Ripple announced that financial institutions piloting xRapid saved 40-70% on average compared to traditional foreign exchange brokers who facilitate cross-border payments.\n",
+      "\n",
+      " 15 ) ----------  https://ripple.com/insights/president-bill-clinton-keynotes-swell-2018/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mPresident Bill Clinton Keynotes Swell 2018\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/swell_insights_thumbnail-06.png\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Today, we’re thrilled to announce 42nd President of the United States Bill Clinton as the keynote speaker for Swell – where the world’s leaders in policy, payments and technology connect.\n",
+      "At a time when groundbreaking technology and regulation were often on a collision course, President Clinton helped usher in a period of extreme growth and adoption of the Internet, shaping what it is today.\n",
+      "However, with this new technology comes potential for concern, requiring thoughtful policy to protect consumers from risk without hampering innovation.\n",
+      "Gene Sperling, National Economic Council Director and Advisor under Presidents Clinton and Obama, will moderate a Q&A with President Clinton during the keynote address.\n",
+      "For more information, we encourage you to visit the Swell website and stay tuned over the coming weeks for updates on this dynamic line-up.\n",
+      "\n",
+      " 16 ) ----------  https://ripple.com/insights/q2-2018-xrp-markets-report/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mQ2 2018 XRP Markets Report\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_793599142.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "By Cory Johnson & Miguel ViasRipple sells $73.53 million in XRP amidst low volatility in Q2 2018$73.53 million XRP soldRipple sales volume accounted for 0.125 percent of global XRP volumeThree billion XRP released out of cryptographic escrow, 2.7 billion XRP returned to escrowIn Q2 2018, the company sold $56.66 million XRP programmatically.\n",
+      "Q2 Escrow ActivityIn Q4 2017, Ripple locked up 55 billion XRP in a cryptographically-secured escrow account.\n",
+      "During Q2, the XRP market also slowed considerably, compared to the prices and volumes we saw in Q4 2017 and Q1 2018.\n",
+      "The highest XRP volatility, as it happens, was not Q4 2017, but Q2 2017 when XRP volatility hit 22.3 percent.\n",
+      "Last quarter’s (Q1 2018) XRP market report can be found here.\n",
+      "\n",
+      " 17 ) ----------  https://ripple.com/insights/schwartz-rides-tour-de-schwartz-eu/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mSchwartz Rides Again: Tour de Schwartz EU\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/Tour_De_Schwartz_Rides_Again.png\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "David Schwartz — Ripple’s Chief Cryptographer and one of the original architects of the XRP Ledger — is hitting the road again.\n",
+      "Week 4: IrelandFor his final week in Europe, David is Ireland-bound to attend on Monday, June 11.\n",
+      "At a meetup in Dublin, he’ll chat digital assets moderated by Fortune’s Robert Hackett in front of an audience of about 80 attendees from the local tech community.\n",
+      "Last but not least, on Tuesday, June 12, David will sit for another fireside chat at MoneyConf in Dublin.\n",
+      "He’ll discuss how Ripple’s mission of establishing an Internet of Value can enable the democratization of global finance.\n",
+      "\n",
+      " 18 ) ----------  https://ripple.com/insights/mitsubishi-corporation-standard-chartered-and-krungsri-pilot-payments-from-singapore-to-thailand-on-ripplenet/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mMitsubishi Corporation, Krungsri and Standard Chartered Pilot Payments from Thailand to Singapore on RippleNet\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_379879492.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Mitsubishi Corporation, Standard Chartered and Bank of Ayudhya (Krungsri) — a Thailand subsidiary of MUFG Bank — jointly announced a pilot test for payments between Singapore and Thailand with xCurrent.\n",
+      "This dormant capital is subject to foreign exchange, counterparty and fraud risks, as well as administrative burdens, making cross-border payments even more complicated for these entities.\n",
+      "The goal of the pilot is to demonstrate the commercial viability of delivering high-speed cross-border payments between independent banks.\n",
+      "As global trade continues to increase, the problems associated with cross-border payments are being experienced by smaller businesses as well.\n",
+      "To learn more about Ripple’s solutions or to become a member of RippleNet contact us.\n",
+      "\n",
+      " 19 ) ----------  https://ripple.com/insights/xvia-opens-new-doors-in-emerging-markets/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mxVia Opens New Doors in Emerging Markets\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_526625740.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Emerging markets have revealed a new and critical challenge for global payments.\n",
+      "Adding further complexity, billions of new people each year are accessing financial institutions for the first time ever.\n",
+      "xVia as a solutionxVia allows for financial institutions and businesses to easily send payments to and from emerging markets by leveraging the benefits of RippleNet — Ripple’s decentralized global payments network.\n",
+      "The individuals and businesses that rely on them can send payments faster and cheaper anywhere in the world.\n",
+      "They will leverage xVia’s standard API solution to power payments through RippleNet and access new markets, including emerging markets faster and more efficiently.\n",
+      "\n",
+      " 20 ) ----------  https://ripple.com/insights/q1-2018-xrp-markets-report/  ---------- \n",
+      "TITLE: \u001b[1m\u001b[91mQ1 2018 XRP Markets Report\u001b[0m\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"https://cdn.ripple.com/wp-content/uploads/2014/10/shutterstock_563715730.jpg\" width=\"500\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Three billion XRP was released out of escrow (one billion in January, February and March).\n",
+      "However, 2.7 billion XRP was put back into new escrow contracts — 900 million in months 56, 57 and 58.\n",
+      "XRP’s Fall Representative of Overall Digital Asset MarketXRP’s overall market capitalization mirrored that of the overall digital asset market, though at times it was somewhat exaggerated in comparison.\n",
+      "Market Share of XRP DoublesThough XRP largely followed broader market price action in Q1, there were some significant deviations.\n",
+      "The Commission is studying digital assets and will issue a report on their use cases later this year.\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"------------- Ripple Insights : \", my_news_website)\n",
+    "count = 1\n",
+    "for art in my_newspaper.articles:\n",
+    "    try:\n",
+    "        article = Article(art.url)\n",
+    "        article.download()\n",
+    "        article.parse()\n",
+    "        article.nlp()\n",
+    "        if len(article.summary) < 100:\n",
+    "            print (\"Skipping\", art.url)\n",
+    "            continue\n",
+    "        print (\"\\n\",count,\") ---------- \", art.url, \" ---------- \")\n",
+    "        print (\"TITLE: \"+ color.BOLD + color.RED + article.title + color.END)\n",
+    "        image = article.top_image\n",
+    "        if (len(image) != 0 and \"logo\" not in image):\n",
+    "            display(Image(url= image, width=500))\n",
+    "        print (article.summary)\n",
+    "        videos = article.movies\n",
+    "        if len(videos) != 0:\n",
+    "            HTML('<iframe width=\"560\" height=\"315\" src='+video[0]+' frameborder=\"0\" allowfullscreen></iframe>')\n",
+    "    except:\n",
+    "        print (\"Error with the url\")\n",
+    "    if (count == 20):\n",
+    "        break\n",
+    "    count += 1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Search Ripple News"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.jupyter.widget-view+json": {
+       "model_id": "a62fafde3b834f8095c070311178c375",
+       "version_major": 2,
+       "version_minor": 0
+      },
+      "text/plain": [
+       "Text(value='')"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "from ipywidgets import widgets\n",
+    "from IPython.display import display\n",
+    "text = widgets.Text()\n",
+    "display(text)\n",
+    "\n",
+    "def handle_submit(sender):\n",
+    "    print(text.value)\n",
+    "\n",
+    "text.on_submit(handle_submit)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
